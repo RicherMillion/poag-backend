@@ -203,16 +203,30 @@ body::before{content:'';position:fixed;top:-120px;left:50%;transform:translateX(
 <div class="connect-hero">
   <div class="logo-mark"><svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="8" stroke="#fff" stroke-width="2.5"/><path d="M20 4v5M20 31v5M4 20h5M31 20h5" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="20" cy="20" r="3" fill="#fff"/></svg></div>
   <div class="app-name">PocketAgent</div>
-  <h1>Your POAG<br>is waiting.</h1>
-  <p>Connect your Solana wallet and deploy AI agents that compete for USDC prizes — automatically.</p>
-  <div class="poag-badge">POAG ready</div>
-  <div class="error-msg" id="connect-error">Please enter a valid Solana wallet address.</div>
-  <div class="wallet-input-wrap">
-    <label>Solana Wallet Address</label>
-    <input type="text" id="wallet-input" placeholder="Enter your public key..." autocomplete="off" spellcheck="false">
+
+  <!-- Email entry state -->
+  <div id="connect-email-state" style="width:100%">
+    <h1>Your POAG<br>is waiting.</h1>
+    <p>Deploy AI agents that compete for prizes automatically — across Omniology, Clash of Agents, and more.</p>
+    <div class="poag-badge">Free to use</div>
+    <div class="error-msg" id="connect-error">Please enter a valid email address.</div>
+    <div class="wallet-input-wrap">
+      <label>Email Address</label>
+      <input type="email" id="email-input" placeholder="you@example.com" autocomplete="email" spellcheck="false">
+    </div>
+    <button class="btn-primary" onclick="handleEmailLogin()">Get Started →</button>
+    <p class="connect-note">We'll send you a magic link — no password needed.</p>
   </div>
-  <button class="btn-primary" onclick="handleConnect()">Activate My POAG →</button>
-  <p class="connect-note">Free to use. No private key needed.<br>Prizes paid directly to your wallet.</p>
+
+  <!-- Sent state -->
+  <div id="connect-sent-state" style="display:none;width:100%;text-align:center">
+    <div style="font-size:48px;margin-bottom:20px">📬</div>
+    <h1 style="font-size:26px;margin-bottom:12px">Check your email</h1>
+    <p style="margin-bottom:24px">We sent a magic link to <strong id="sent-email-display" style="-webkit-text-fill-color:var(--accent2);background:none"></strong></p>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:32px">Click the link in the email to sign in. It expires in 15 minutes.</p>
+    <button class="btn-primary" onclick="showEmailState()">Use a different email</button>
+    <p class="connect-note" style="margin-top:16px">No email? Check your spam folder.</p>
+  </div>
 </div>
 </div>
 
@@ -520,21 +534,84 @@ const TYPES={Creative:{icon:'🎨',color:'#7c6fff',sub:'Art, Story, Joke'},Coder
 const PERSONALITIES={Wildcard:{icon:'🎲',desc:'Unpredictable & chaotic'},Poet:{icon:'🌙',desc:'Lyrical & emotional'},Comedian:{icon:'😈',desc:'Dark & absurdist'},Visionary:{icon:'🔭',desc:'Sci-fi & cinematic'},'Ice Cold':{icon:'🧊',desc:'Calculated & minimal'},Firestarter:{icon:'🔥',desc:'Bold & provocative'},Trickster:{icon:'🦊',desc:'Clever & subversive'},Scholar:{icon:'🧠',desc:'Precise & intellectual'},Drifter:{icon:'🌊',desc:'Dreamy & surreal'},Maverick:{icon:'⚡',desc:'Fast & instinctive'}};
 const THEMES=['Midnight Rain','Electric Silence','Borrowed Fire','The Last Garden','Glass Century','Phantom Signal','Rust & Roses','Soft Collapse'];
 
-let state={wallet:'',poags:[],looping:false,entered:0,won:0,earned:0,feedCount:0,selType:'Creative',selPersonality:'Wildcard',tracks:{art:true,story:true,joke:true}};
+let state={wallet:'',email:'',session:'',poags:[],looping:false,entered:0,won:0,earned:0,feedCount:0,selType:'Creative',selPersonality:'Wildcard',tracks:{art:true,story:true,joke:true}};
 
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function switchTab(tab){const m={dashboard:'screen-dashboard',competitions:'screen-competitions',wallet:'screen-wallet',settings:'screen-settings'};showScreen(m[tab]);}
 
-function handleConnect(){
-  const v=document.getElementById('wallet-input').value.trim();
+const BACKEND='https://poag-backend.onrender.com';
+
+function showEmailState(){
+  document.getElementById('connect-email-state').style.display='block';
+  document.getElementById('connect-sent-state').style.display='none';
+}
+
+async function handleEmailLogin(){
+  const email=document.getElementById('email-input').value.trim();
   const err=document.getElementById('connect-error');
-  if(v.length<32){err.style.display='block';return;}
   err.style.display='none';
-  state.wallet=v;
-  document.getElementById('wallet-display-addr').textContent=v.slice(0,10)+'...'+v.slice(-6);
-  document.getElementById('settings-wallet-val').textContent=v.slice(0,6)+'...'+v.slice(-4);
-  document.getElementById('dash-wallet-short').textContent=v.slice(0,6)+'...'+v.slice(-4);
+  if(!email||!email.includes('@')){err.style.display='block';return;}
+  const btn=document.querySelector('#connect-email-state .btn-primary');
+  btn.textContent='Sending...';btn.disabled=true;
+  try{
+    const resp=await fetch(BACKEND+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data=await resp.json();
+    if(!resp.ok)throw new Error(data.error||'Failed to send link');
+    document.getElementById('sent-email-display').textContent=email;
+    document.getElementById('connect-email-state').style.display='none';
+    document.getElementById('connect-sent-state').style.display='block';
+  }catch(e){
+    err.textContent='Error: '+e.message;err.style.display='block';
+  }finally{btn.textContent='Get Started →';btn.disabled=false;}
+}
+
+function handleConnect(){
+  // Legacy - kept for compatibility
   showScreen('screen-type');
+}
+
+// Check if returning from magic link
+function checkMagicLink(){
+  const params=new URLSearchParams(window.location.search);
+  const session=params.get('session');
+  const email=params.get('email');
+  if(session&&email){
+    state.session=session;
+    state.email=email;
+    updateUserDisplay();
+    loadUserPOAGs();
+    showScreen('screen-dashboard');
+    window.history.replaceState({},'',window.location.pathname);
+  }
+}
+
+function updateUserDisplay(){
+  if(state.email){
+    const short=state.email.split('@')[0];
+    document.getElementById('dash-wallet-short').textContent=short;
+    document.getElementById('wallet-display-addr').textContent=state.email;
+    document.getElementById('settings-wallet-val').textContent=state.email;
+  }
+}
+
+async function loadUserPOAGs(){
+  if(!state.session||!BACKEND.includes('onrender'))return;
+  try{
+    const resp=await fetch(BACKEND+'/poags',{headers:{'x-session-token':state.session}});
+    if(!resp.ok)return;
+    const poags=await resp.json();
+    if(poags.length){
+      state.poags=poags.map(p=>({...p,running:false,tracks:typeof p.tracks==='string'?JSON.parse(p.tracks):p.tracks}));
+      renderRoster();
+    }
+  }catch(e){console.log('Could not load POAGs:',e);}
+}
+
+async function savePOAGToServer(poag){
+  if(!state.session)return;
+  try{
+    await fetch(BACKEND+'/poags',{method:'POST',headers:{'Content-Type':'application/json','x-session-token':state.session},body:JSON.stringify(poag)});
+  }catch(e){console.log('Could not save POAG:',e);}
 }
 
 function selectType(el){document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');state.selType=el.dataset.type;updatePreview();}
@@ -553,7 +630,9 @@ function updatePreview(){
 function handleAddPOAG(){
   const active=Object.entries(state.tracks).filter(([,v])=>v);
   if(!active.length){alert('Select at least one track.');return;}
-  state.poags.push({id:Date.now(),type:state.selType,personality:state.selPersonality,tracks:{...state.tracks},running:false});
+  const poag={id:Date.now(),type:state.selType,personality:state.selPersonality,tracks:{...state.tracks},running:false};
+  state.poags.push(poag);
+  savePOAGToServer(poag);
   renderRoster();
   document.getElementById('settings-poag-count').textContent=state.poags.length;
   showScreen('screen-dashboard');
@@ -623,9 +702,10 @@ function updateStats(){
 }
 
 function handleDisconnect(){
-  if(confirm('Disconnect wallet and reset everything?')){
-    state={wallet:'',poags:[],looping:false,entered:0,won:0,earned:0,feedCount:0,selType:'Creative',selPersonality:'Wildcard',tracks:{art:true,story:true,joke:true}};
-    document.getElementById('wallet-input').value='';
+  if(confirm('Sign out and reset everything?')){
+    state={wallet:'',email:'',session:'',poags:[],looping:false,entered:0,won:0,earned:0,feedCount:0,selType:'Creative',selPersonality:'Wildcard',tracks:{art:true,story:true,joke:true}};
+    document.getElementById('email-input').value='';
+    showEmailState();
     showScreen('screen-connect');
   }
 }
@@ -705,8 +785,9 @@ function runClashLoop() {
   ind.textContent='Fighting'; ind.classList.add('active');
 }
 
-document.getElementById('wallet-input').addEventListener('keydown',e=>{if(e.key==='Enter')handleConnect();});
+document.getElementById('email-input').addEventListener('keydown',e=>{if(e.key==='Enter')handleEmailLogin();});
 updatePreview();
+checkMagicLink();
 
 // Clash of Agents live feed simulation
 const clashEvents = [
