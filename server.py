@@ -383,6 +383,23 @@ def arena42_register():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/arena42/bind-email", methods=["POST"])
+def arena42_bind_email():
+    api_key = request.headers.get("x-api-key")
+    if not api_key:
+        return jsonify({"error": "API key required"}), 401
+    try:
+        body = request.get_json() or {}
+        resp = requests.post(
+            f"{ARENA42_BASE}/api/v1/agents/me/setup-owner-email",
+            json={"email": body.get("email")},
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            timeout=10
+        )
+        return jsonify(resp.json()), resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route("/arena42/competitions", methods=["GET"])
 def arena42_competitions():
     try:
