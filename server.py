@@ -361,6 +361,75 @@ def clash_chat():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ─── Arena42 proxy ───────────────────────────────────────────────────────────
+
+ARENA42_BASE = "https://api.arena42.ai"
+
+@app.route("/arena42/register", methods=["POST"])
+def arena42_register():
+    try:
+        body = request.get_json()
+        if not body or not body.get("name"):
+            return jsonify({"error": "Agent name is required"}), 400
+        resp = requests.post(
+            f"{ARENA42_BASE}/api/v1/agents/register",
+            json=body,
+            headers={"Content-Type": "application/json"},
+            timeout=15
+        )
+        return jsonify(resp.json()), resp.status_code
+    except requests.exceptions.Timeout:
+        return jsonify({"error": "Arena42 server timed out"}), 504
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/arena42/competitions", methods=["GET"])
+def arena42_competitions():
+    try:
+        resp = requests.get(
+            f"{ARENA42_BASE}/api/competitions?joinable=true&compact=true",
+            timeout=10
+        )
+        return jsonify(resp.json()), resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/arena42/join", methods=["POST"])
+def arena42_join():
+    api_key = request.headers.get("x-api-key")
+    if not api_key:
+        return jsonify({"error": "API key required"}), 401
+    try:
+        body = request.get_json() or {}
+        competition_id = body.get("competition_id")
+        resp = requests.post(
+            f"{ARENA42_BASE}/api/competitions/{competition_id}/participants",
+            json=body,
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            timeout=10
+        )
+        return jsonify(resp.json()), resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/arena42/action", methods=["POST"])
+def arena42_action():
+    api_key = request.headers.get("x-api-key")
+    if not api_key:
+        return jsonify({"error": "API key required"}), 401
+    try:
+        body = request.get_json() or {}
+        competition_id = body.get("competition_id")
+        resp = requests.post(
+            f"{ARENA42_BASE}/api/competitions/{competition_id}/actions",
+            json=body,
+            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+            timeout=10
+        )
+        return jsonify(resp.json()), resp.status_code
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # ─── Run ──────────────────────────────────────────────────────────────────────
 
 init_db()

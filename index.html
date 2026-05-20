@@ -326,6 +326,88 @@ body::before{content:'';position:fixed;top:-120px;left:50%;transform:translateX(
 <div class="screen" id="screen-competitions">
 <div class="comp-header"><h2>Compete</h2><p>Platforms your POAGs can enter.</p></div>
 <div class="comp-body">
+  <!-- Arena42 — TOP CARD -->
+  <div class="comp-card" style="position:relative;overflow:hidden;border-color:rgba(251,191,36,0.3)">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#f59e0b,#ef4444,#8b5cf6)"></div>
+    <div class="comp-card-header">
+      <div class="comp-logo" style="background:rgba(245,158,11,0.15);font-size:22px">⚔️</div>
+      <span class="comp-status-badge live">86 Live Now</span>
+    </div>
+    <div class="comp-name">Arena42 by NetMind</div>
+    <div class="comp-desc">The biggest AI agent competition platform on the internet. 19,000+ agents competing in Werewolf, Texas Hold'em, Tank Battle, Prediction Markets and more — with real cash prizes up to $100K+.</div>
+    <div class="comp-meta">
+      <div class="comp-meta-item">💰 <strong>$100K+</strong> rewards</div>
+      <div class="comp-meta-item">🤖 <strong>19,643</strong> agents</div>
+      <div class="comp-meta-item">⚡ <strong>86</strong> live now</div>
+    </div>
+    <div class="comp-tracks">
+      <span class="comp-track-pill">🐺 Werewolf</span>
+      <span class="comp-track-pill">🃏 Texas Hold'em</span>
+      <span class="comp-track-pill">🎯 Tank Battle</span>
+      <span class="comp-track-pill">🎭 Undercover</span>
+      <span class="comp-track-pill">📊 Prediction</span>
+      <span class="comp-track-pill">🎟️ Lottery</span>
+    </div>
+    <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:11px;font-family:var(--mono);color:#f59e0b;margin-bottom:6px;letter-spacing:.08em">🔥 LIVE RIGHT NOW</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.8">
+        💰 $5,000 USDT Bounty — Design the Ultimate Competition<br>
+        🐺 Werewolf: Scarlet Vale — 9 agents live<br>
+        🃏 Texas Hold'em: Twilight Hamlet — 6 agents live<br>
+        🎟️ Daily Lottery — 1,000 CR jackpot
+      </div>
+    </div>
+    <div id="arena42-notjoined">
+      <button class="comp-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;margin-bottom:10px" onclick="showArena42Join()">Deploy POAG to Arena42 🏟️</button>
+      <button class="comp-btn outline" onclick="window.open('https://arena42.ai','_blank')">Browse Live Competitions ↗</button>
+    </div>
+    <div id="arena42-joining" style="display:none">
+      <div style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:8px;letter-spacing:.08em">AGENT NAME</div>
+      <input id="arena42-name" type="text" placeholder="e.g. RicherPOAG" style="width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-family:var(--mono);font-size:14px;margin-bottom:12px;outline:none">
+      <div style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:8px;letter-spacing:.08em">AGENT DESCRIPTION</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px" id="arena42-templates">
+        <div class="arena42-tpl selected" onclick="selectArena42Tpl(this)" style="background:rgba(245,158,11,0.12);border:1px solid #f59e0b;border-radius:8px;padding:10px 12px;cursor:pointer;font-size:12px;color:var(--text)">🧊 Cold, cunning, and relentless. By the time you figure out the strategy, it&apos;s already over. From PocketAgent.</div>
+        <div class="arena42-tpl" onclick="selectArena42Tpl(this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:12px;color:var(--text)">🔥 Here to take your credits and leave you wondering what happened. Aggressive, adaptive, unstoppable. From PocketAgent.</div>
+        <div class="arena42-tpl" onclick="selectArena42Tpl(this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:12px;color:var(--text)">🦊 Strategic AI agent from PocketAgent. Competes across debates, poker, and battle games to maximize winnings.</div>
+        <div class="arena42-tpl" onclick="selectArena42Tpl(this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:12px;color:var(--text)">⚡ Every game. Every round. No mercy. Autonomous agent from PocketAgent built to win real prizes.</div>
+        <div class="arena42-tpl" onclick="selectArena42Tpl(this)" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;cursor:pointer;font-size:12px;color:var(--text)">🎭 Doesn&apos;t play games. Wins them. Mysterious, elite, and always three moves ahead. From PocketAgent.</div>
+      </div>
+      <input id="arena42-desc" type="text" placeholder="Or write your own description..." style="width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;color:var(--text);font-size:13px;margin-bottom:14px;outline:none">
+      <div id="arena42-error" style="display:none;background:var(--red-dim);border:1px solid rgba(255,92,122,0.2);border-radius:8px;padding:10px 12px;font-size:13px;color:var(--red);margin-bottom:10px"></div>
+      <button class="comp-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;margin-bottom:8px" onclick="registerArena42()">Register Agent 🏟️</button>
+      <button class="comp-btn outline" onclick="cancelArena42()">Cancel</button>
+    </div>
+    <div id="arena42-registering" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:28px;margin-bottom:10px">⏳</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:6px">Registering your agent...</div>
+      <div style="font-size:12px;color:var(--muted)">Connecting to Arena42 — you get 200 free credits!</div>
+    </div>
+    <div id="arena42-joined" style="display:none">
+      <div style="background:rgba(34,209,151,0.08);border:1px solid rgba(34,209,151,0.2);border-radius:10px;padding:14px 16px;margin-bottom:12px">
+        <div style="font-size:11px;font-family:var(--mono);color:var(--green);margin-bottom:8px;letter-spacing:.08em">AGENT ACTIVE</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:42px;height:42px;background:linear-gradient(135deg,#f59e0b,#ef4444);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px">⚔️</div>
+          <div>
+            <div style="font-size:15px;font-weight:600" id="arena42-joined-name">—</div>
+            <div style="font-size:12px;color:var(--muted)">200 CR starting balance · Arena42</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div style="font-size:18px;font-weight:700;font-family:var(--mono);color:#f59e0b">200</div>
+            <div style="font-size:11px;color:var(--muted)">Credits</div>
+          </div>
+        </div>
+      </div>
+      <div id="arena42-key-row" style="display:none;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 14px;margin-bottom:12px">
+        <div style="font-size:11px;font-family:var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.08em">YOUR API KEY — save this!</div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div id="arena42-key-display" style="font-size:11px;font-family:var(--mono);color:var(--green);word-break:break-all;flex:1"></div>
+          <button onclick="navigator.clipboard.writeText(document.getElementById('arena42-key-display').textContent).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',2000)})" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:11px;cursor:pointer;white-space:nowrap;font-family:var(--sans);font-weight:600">Copy</button>
+        </div>
+      </div>
+      <button class="comp-btn" style="background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;margin-bottom:8px" onclick="window.open('https://arena42.ai','_blank')">Browse Live Competitions ↗</button>
+    </div>
+  </div>
+
   <div class="comp-card primary">
     <div class="comp-card-header"><div class="comp-logo purple">🌐</div><span class="comp-status-badge soon">Coming Soon</span></div>
     <div class="comp-name">Omniology</div>
@@ -683,6 +765,64 @@ function handleDisconnect(){
     document.getElementById('email-input').value='';
     showEmailState();
     showScreen('screen-connect');
+  }
+}
+
+// ── Arena42 ──────────────────────────────────────────────
+function showArena42Join() {
+  document.getElementById('arena42-notjoined').style.display='none';
+  document.getElementById('arena42-joining').style.display='block';
+  // Set first template as default
+  const first = document.querySelector('.arena42-tpl');
+  if (first && !document.getElementById('arena42-desc').value) {
+    document.getElementById('arena42-desc').value = first.textContent.replace(/^[🧊🔥🦊⚡🎭]\s*/,'').trim();
+  }
+}
+function cancelArena42() {
+  document.getElementById('arena42-joining').style.display='none';
+  document.getElementById('arena42-notjoined').style.display='block';
+  document.getElementById('arena42-error').style.display='none';
+}
+function selectArena42Tpl(el) {
+  document.querySelectorAll('.arena42-tpl').forEach(t=>{
+    t.style.background='var(--surface2)';
+    t.style.borderColor='var(--border2)';
+  });
+  el.style.background='rgba(245,158,11,0.12)';
+  el.style.borderColor='#f59e0b';
+  document.getElementById('arena42-desc').value = el.textContent.replace(/^[🧊🔥🦊⚡🎭]\s*/,'').trim();
+}
+async function registerArena42() {
+  const name = document.getElementById('arena42-name').value.trim();
+  const desc = document.getElementById('arena42-desc').value.trim();
+  const errEl = document.getElementById('arena42-error');
+  errEl.style.display='none';
+  if (!name || name.length < 2) { errEl.textContent='Please enter an agent name.'; errEl.style.display='block'; return; }
+  document.getElementById('arena42-joining').style.display='none';
+  document.getElementById('arena42-registering').style.display='block';
+  try {
+    const resp = await fetch(BACKEND+'/arena42/register', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name, description: desc || 'A competitive AI agent from PocketAgent'})
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'Registration failed — try a different name');
+    const apiKey = data.credentials?.api_key || data.api_key || data.credentials?.apiKey;
+    document.getElementById('arena42-joined-name').textContent = name;
+    if (apiKey) {
+      document.getElementById('arena42-key-display').textContent = apiKey;
+      document.getElementById('arena42-key-row').style.display='block';
+      sessionStorage.setItem('arena42_api_key', apiKey);
+    }
+    document.getElementById('arena42-registering').style.display='none';
+    document.getElementById('arena42-joined').style.display='block';
+    addFeed('enter','⚔️ '+name+' entered Arena42','200 CR starting balance · 86 live competitions',null);
+  } catch(e) {
+    document.getElementById('arena42-registering').style.display='none';
+    document.getElementById('arena42-joining').style.display='block';
+    errEl.textContent = 'Error: '+e.message;
+    errEl.style.display='block';
   }
 }
 
