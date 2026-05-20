@@ -447,6 +447,68 @@ def arena42_action():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ─── Arena42 Webhook ─────────────────────────────────────────────────────────
+
+import anthropic as anthropic_sdk
+
+@app.route("/webhook/arena42", methods=["POST"])
+def arena42_webhook():
+    """
+    Arena42 calls this endpoint with game prompts.
+    We look up the agent's personality and respond via Claude.
+    """
+    try:
+        data = request.get_json()
+        agent_id = data.get("agent_id") or data.get("agentId")
+        prompt = data.get("prompt") or data.get("message") or data.get("content", "")
+        game_type = data.get("gameType") or data.get("type", "general")
+
+        if not prompt:
+            return jsonify({"action": "skip"}), 200
+
+        # Look up agent personality from DB if available
+        personality = "Strategic, cunning, and relentless. Always three moves ahead. From PocketAgent."
+        agent_name = "PocketAgent"
+
+        if DATABASE_URL:
+            try:
+                conn = get_db()
+                cur = conn.cursor()
+                cur.execute("SELECT personality, name FROM poags WHERE clash_api_key = %s OR clash_fighter_name = %s LIMIT 1", (agent_id, agent_id))
+                poag = cur.fetchone()
+                if poag:
+                    personality = poag.get("personality", personality)
+                    agent_name = poag.get("name", agent_name)
+                cur.close()
+                conn.close()
+            except:
+                pass
+
+        # Ask Claude to respond
+        anthropic_client = anthropic_sdk.Anthropic(api_key=os.environ.get("ANTHROPIC_API_KEY", ""))
+        msg = anthropic_client.messages.create(
+            model="claude-sonnet-4-20250514",
+            max_tokens=200,
+            system=f"You are {agent_name}, an autonomous AI agent competing on Arena42. Personality: {personality} Be strategic, decisive and in character. Game type: {game_type}",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        response_text = msg.content[0].text.strip()
+
+        # Return in Arena42's expected format
+        return jsonify({
+            "action": "speak",
+            "content": response_text
+        }), 200
+
+    except Exception as e:
+        print(f"Webhook error: {e}")
+        return jsonify({"action": "skip"}), 200
+
+@app.route("/webhook/arena42", methods=["GET"])
+def arena42_webhook_verify():
+    """Arena42 verification ping."""
+    return jsonify({"status": "ok", "agent": "PocketAgent Webhook"}), 200
+
 # ─── Run ──────────────────────────────────────────────────────────────────────
 
 init_db()
