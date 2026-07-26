@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Jamaican American Soul Food — Real Jerk. Real Soul. · Sarasota, FL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,900;1,9..144,600;1,9..144,900&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#0d0805; --char:#160e08; --ember:#ff6b35; --gold:#ffb627; --cream:#fff6e8; --smoke:#a89584;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--black); color:var(--cream); font-family:'Inter',sans-serif; line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+::selection { background:var(--ember); color:var(--black); }
+
+.demo { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(13,8,5,.92); backdrop-filter:blur(6px);
+  color:var(--smoke); font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; text-align:center; padding:.45rem .8rem; }
+.demo b { color:var(--gold); }
+
+/* ---------- HERO ---------- */
+.hero { min-height:100svh; position:relative; display:flex; flex-direction:column; justify-content:center; padding:6rem clamp(1.25rem,6vw,6rem) 7rem; isolation:isolate; }
+.hero::before { content:""; position:absolute; inset:0; z-index:-2;
+  background:
+    radial-gradient(55rem 40rem at 78% 18%, rgba(255,107,53,.22), transparent 62%),
+    radial-gradient(40rem 34rem at 12% 92%, rgba(255,182,39,.13), transparent 60%),
+    linear-gradient(180deg,#0d0805 0%,#1a0f07 55%,#0d0805 100%); }
+.hero::after { content:""; position:absolute; inset:0; z-index:-1; opacity:.5; mix-blend-mode:overlay; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E"); }
+.embers { position:absolute; inset:0; z-index:-1; overflow:hidden; pointer-events:none; }
+.embers i { position:absolute; bottom:-2rem; width:5px; height:5px; border-radius:50%; background:var(--ember);
+  filter:blur(1px); opacity:0; animation:rise linear infinite; }
+.embers i:nth-child(2n) { background:var(--gold); width:3px; height:3px; }
+@keyframes rise { 0% { transform:translateY(0) translateX(0); opacity:0; } 8% { opacity:.85; }
+  100% { transform:translateY(-105vh) translateX(4rem); opacity:0; } }
+
+.crown { display:flex; align-items:center; gap:.8rem; margin-bottom:2.2rem; }
+.crown .flame { width:2.6rem; height:2.6rem; }
+.crown span { text-transform:uppercase; letter-spacing:.34em; font-size:.72rem; color:var(--gold); font-weight:700; }
+h1 { font-family:'Fraunces',serif; font-weight:900; font-size:clamp(3.2rem,11.5vw,9rem); line-height:.92; letter-spacing:-.015em; text-wrap:balance; }
+h1 .l1 { display:block; }
+h1 .l2 { display:block; font-style:italic; color:transparent; background:linear-gradient(100deg,var(--ember),var(--gold)); -webkit-background-clip:text; background-clip:text; padding-right: .1em;}
+.hero .sub { margin-top:1.6rem; font-size:clamp(1rem,2vw,1.25rem); max-width:44ch; color:var(--smoke); }
+.hero .sub em { color:var(--cream); font-style:normal; font-weight:600; }
+.hero-cta { display:flex; flex-wrap:wrap; gap:1rem; margin-top:2.8rem; align-items:center; }
+.btn-fire { position:relative; display:inline-flex; align-items:center; gap:.7rem; background:linear-gradient(100deg,var(--ember),#ff8c42);
+  color:var(--black); font-weight:800; font-size:1.05rem; padding:1.05rem 2.3rem; border-radius:999px; text-decoration:none;
+  box-shadow:0 0 0 1px rgba(255,140,66,.35), 0 12px 44px rgba(255,107,53,.38); transition:transform .18s, box-shadow .18s; }
+.btn-fire:hover { transform:translateY(-2px); box-shadow:0 0 0 1px rgba(255,140,66,.5), 0 18px 60px rgba(255,107,53,.5); }
+.btn-line { color:var(--cream); text-decoration:none; font-weight:600; border-bottom:2px solid var(--ember); padding-bottom:.15rem; }
+.apps { margin-top:2.6rem; display:flex; gap:.6rem; flex-wrap:wrap; }
+.apps span { border:1px solid rgba(255,246,232,.22); border-radius:999px; padding:.42rem 1.05rem; font-size:.78rem; letter-spacing:.05em; color:var(--smoke); }
+.apps span b { color:var(--cream); font-weight:600; }
+
+/* marquee */
+.ticker { position:absolute; left:0; right:0; bottom:0; border-top:1px solid rgba(255,246,232,.12); background:rgba(13,8,5,.6);
+  overflow:hidden; white-space:nowrap; padding:.85rem 0; }
+.ticker .track { display:inline-block; animation:scroll 26s linear infinite; }
+.ticker span { font-family:'Fraunces',serif; font-style:italic; font-size:1.02rem; color:var(--smoke); margin:0 1.6rem; }
+.ticker span::after { content:"✦"; color:var(--ember); margin-left:3.2rem; font-style:normal; }
+@keyframes scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* ---------- SECTIONS ---------- */
+section { padding:clamp(4.5rem,10vw,8rem) clamp(1.25rem,6vw,6rem); max-width:78rem; margin:0 auto; }
+.k { text-transform:uppercase; letter-spacing:.3em; font-size:.7rem; font-weight:700; color:var(--ember); display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+.k::before { content:""; width:2.6rem; height:1px; background:var(--ember); }
+h2 { font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2.1rem,5.5vw,3.8rem); line-height:1.02; letter-spacing:-.01em; margin-bottom:1.4rem; }
+h2 em { font-style:italic; color:var(--gold); }
+
+.story { display:grid; gap:2.5rem; grid-template-columns:1fr; align-items:start; }
+@media(min-width:840px){ .story { grid-template-columns:1.15fr .85fr; gap:5rem; } }
+.story p { color:var(--smoke); font-size:1.08rem; }
+.story p + p { margin-top:1.1rem; }
+.story p b { color:var(--cream); }
+.pull { border-left:3px solid var(--ember); padding:.4rem 0 .4rem 1.6rem; margin-top:2rem;
+  font-family:'Fraunces',serif; font-style:italic; font-size:1.5rem; line-height:1.35; color:var(--cream); }
+.factwall { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(255,246,232,.1); border:1px solid rgba(255,246,232,.1); border-radius:18px; overflow:hidden; }
+.fact { background:var(--char); padding:1.7rem 1.4rem; }
+.fact .n { font-family:'Fraunces',serif; font-weight:900; font-size:2rem; color:var(--gold); line-height:1; }
+.fact .t { font-size:.8rem; color:var(--smoke); margin-top:.45rem; }
+
+/* menu */
+.menu-sec { max-width:none; background:linear-gradient(180deg,transparent,rgba(255,107,53,.05) 18%,rgba(255,107,53,.05) 82%,transparent); }
+.menu-in { max-width:78rem; margin:0 auto; }
+.dish { display:grid; grid-template-columns:auto 1fr auto; gap:1.4rem; align-items:baseline; padding:2rem 0;
+  border-bottom:1px solid rgba(255,246,232,.12); text-decoration:none; color:inherit; transition:padding-left .2s; }
+.dish:hover { padding-left:1rem; }
+.dish:hover .nm { color:var(--gold); }
+.dish .ix { font-family:'Fraunces',serif; font-style:italic; color:var(--ember); font-size:1rem; }
+.dish .nm { display:block; font-family:'Fraunces',serif; font-weight:900; font-size:clamp(1.6rem,4vw,2.6rem); line-height:1.05; transition:color .2s; }
+.dish .ds { display:block; color:var(--smoke); font-size:.95rem; max-width:52ch; margin-top:.35rem; }
+.dish .tag { font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ember); border:1px solid rgba(255,107,53,.4); padding:.32rem .8rem; border-radius:999px; white-space:nowrap; }
+.menu-note { margin-top:2.2rem; color:var(--smoke); font-size:.9rem; }
+.menu-note a { color:var(--gold); }
+
+/* visit */
+.visit { display:grid; gap:1.2rem; grid-template-columns:1fr; }
+@media(min-width:840px){ .visit { grid-template-columns:1.2fr .8fr; gap:1.2rem; } }
+.panel { border:1px solid rgba(255,246,232,.12); border-radius:22px; padding:clamp(1.8rem,4vw,3rem); background:var(--char); position:relative; overflow:hidden; }
+.panel.fire { background:
+  radial-gradient(30rem 20rem at 85% -20%, rgba(255,107,53,.3), transparent 60%), var(--char); }
+.bigcall { font-family:'Fraunces',serif; font-weight:900; font-size:clamp(2rem,5vw,3.4rem); color:var(--gold); text-decoration:none; display:inline-block; margin:.8rem 0 .5rem; }
+.bigcall:hover { color:var(--ember); }
+.addr { color:var(--smoke); font-size:1rem; }
+.hoursline { display:flex; gap:.8rem; align-items:baseline; padding:.55rem 0; border-bottom:1px dashed rgba(255,246,232,.14); font-size:.95rem; }
+.hoursline b { color:var(--cream); min-width:9rem; font-weight:600; }
+.hoursline span { color:var(--smoke); }
+
+footer { text-align:center; color:var(--smoke); font-size:.75rem; padding:3rem 1.25rem 6.5rem; max-width:46rem; margin:0 auto; opacity:.75; }
+.callbar { position:fixed; left:0; right:0; bottom:0; z-index:90; padding:.7rem 1rem calc(.7rem + env(safe-area-inset-bottom));
+  background:rgba(13,8,5,.9); backdrop-filter:blur(10px); border-top:1px solid rgba(255,246,232,.12); }
+.callbar a { display:block; text-align:center; background:linear-gradient(100deg,var(--ember),#ff8c42); color:var(--black);
+  font-weight:800; padding:.9rem; border-radius:13px; text-decoration:none; }
+@media(min-width:701px){ .callbar { display:none; } }
+
+/* reveal */
+.rv { opacity:0; transform:translateY(26px); transition:opacity .7s ease, transform .7s ease; }
+.rv.on { opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity:1; transform:none; transition:none; } .ticker .track, .embers i { animation:none; } }
+</style>
+</head>
+<body>
+<div class="demo"><b>Concept demo</b> — proposal mockup, not the official site of Jamaican American Soul Food</div>
+
+<header class="hero">
+  <div class="embers" aria-hidden="true"></div>
+  <div class="crown rv">
+    <svg class="flame" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <path d="M24 4c2 7-6 10-6 17a6 6 0 0 0 12 0c0-3-2-5-2-8 5 3 10 8 10 15a14 14 0 1 1-28 0C10 17 20 12 24 4z" fill="#ff6b35"/>
+      <path d="M24 24c1 3-3 4-3 7a3 3 0 0 0 6 0c0-1.5-1-2.5-1-4 2.5 1.5 5 4 5 7.5a7 7 0 1 1-14 0c0-5 5-7.5 7-10.5z" fill="#ffb627"/>
+    </svg>
+    <span>Jamaican American Soul Food · Sarasota</span>
+  </div>
+  <h1 class="rv"><span class="l1">Real jerk.</span><span class="l2">Real soul.</span></h1>
+  <p class="sub rv">Marinated overnight. Smoked slow. Seasoned like somebody's grandmother is watching.
+     <em>Right on Dr. MLK Jr. Way</em> — come hungry or order in.</p>
+  <div class="hero-cta rv">
+    <a class="btn-fire" href="tel:9412605723">Call (941) 260-5723</a>
+    <a class="btn-line" href="#menu">See the menu ↓</a>
+  </div>
+  <div class="apps rv"><span>Delivery on <b>DoorDash</b></span><span>Delivery on <b>Grubhub</b></span><span><b>Takeout</b> at the window</span></div>
+  <div class="ticker" aria-hidden="true"><div class="track">
+    <span>Jerk Chicken</span><span>Oxtail</span><span>Curry Goat</span><span>Collard Greens</span><span>Mac &amp; Cheese</span><span>Rice &amp; Peas</span><span>Fried Plantains</span>
+    <span>Jerk Chicken</span><span>Oxtail</span><span>Curry Goat</span><span>Collard Greens</span><span>Mac &amp; Cheese</span><span>Rice &amp; Peas</span><span>Fried Plantains</span>
+  </div></div>
+</header>
+
+<section id="story">
+  <div class="story">
+    <div class="rv">
+      <div class="k">The kitchen</div>
+      <h2>Two traditions.<br><em>One stove.</em></h2>
+      <p>Kingston seasoning meets Southern comfort in a kitchen that refuses to choose. <b>Jerk chicken with scotch bonnet heat</b> next to collards that simmered all morning. Oxtail gravy over rice &amp; peas. This is food with two passports and one home — Sarasota.</p>
+      <p>No shortcuts, no steam table. Plates are built when you order them, which is why the line moves like church lets out.</p>
+      <div class="pull">“If the smoke isn't rolling, we aren't open.”</div>
+    </div>
+    <div class="factwall rv">
+      <div class="fact"><div class="n">2</div><div class="t">Food traditions, cooked fluently</div></div>
+      <div class="fact"><div class="n">12h</div><div class="t">Overnight jerk marinade</div></div>
+      <div class="fact"><div class="n">2</div><div class="t">Delivery apps, zero cold plates</div></div>
+      <div class="fact"><div class="n">MLK</div><div class="t">Jr. Way — the neighborhood spot</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="menu-sec" id="menu">
+  <div class="menu-in">
+    <div class="k rv">The plates</div>
+    <h2 class="rv">Order like you <em>mean it.</em></h2>
+    <a class="dish rv" href="tel:9412605723">
+      <span class="ix">01</span>
+      <span><span class="nm">Jerk Chicken</span><span class="ds">Overnight marinade, scotch bonnet fire, real smoke — the plate that built the reputation.</span></span>
+      <span class="tag">House icon</span>
+    </a>
+    <a class="dish rv" href="tel:9412605723">
+      <span class="ix">02</span>
+      <span><span class="nm">Oxtail</span><span class="ds">Braised until it gives up, in a gravy you'll want over everything on the plate.</span></span>
+      <span class="tag">Slow braised</span>
+    </a>
+    <a class="dish rv" href="tel:9412605723">
+      <span class="ix">03</span>
+      <span><span class="nm">Curry Goat</span><span class="ds">The island classic — deep, warm, and cooked low until the spoon does all the work.</span></span>
+      <span class="tag">Island classic</span>
+    </a>
+    <a class="dish rv" href="tel:9412605723">
+      <span class="ix">04</span>
+      <span><span class="nm">Soul Food Plates</span><span class="ds">Collards, mac &amp; cheese, cornbread, candied yams — the Southern side of the family, done old-school.</span></span>
+      <span class="tag">Comfort</span>
+    </a>
+    <p class="menu-note rv">Menu rotates with the kitchen's mood — <a href="tel:9412605723">call for today's plates</a> or order on DoorDash &amp; Grubhub.</p>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="k rv">Pull up</div>
+  <h2 class="rv">Find the <em>smoke.</em></h2>
+  <div class="visit">
+    <div class="panel fire rv">
+      <div class="k" style="margin-bottom:.4rem">Call ahead</div>
+      <a class="bigcall" href="tel:9412605723">(941) 260-5723</a>
+      <p class="addr">2025 Dr Martin Luther King Jr Way<br>Sarasota, FL 34234</p>
+    </div>
+    <div class="panel rv">
+      <div class="hoursline"><b>Dine &amp; takeout</b><span>Call for today's hours</span></div>
+      <div class="hoursline"><b>DoorDash</b><span>Delivery across Sarasota</span></div>
+      <div class="hoursline"><b>Grubhub</b><span>Delivery across Sarasota</span></div>
+      <div class="hoursline" style="border-bottom:none"><b>Catering</b><span>Ask about plates for a crowd</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>Concept website mockup generated for pitch purposes. Business details compiled from public listings and should be verified with the owner before publication. This page is not affiliated with or approved by Jamaican American Soul Food.</footer>
+<div class="callbar"><a href="tel:9412605723">📞 Call (941) 260-5723</a></div>
+
+<script>
+const em = document.querySelector('.embers');
+for (let i=0;i<26;i++){ const s=document.createElement('i');
+  s.style.left=(Math.random()*100)+'%'; s.style.animationDuration=(6+Math.random()*9)+'s';
+  s.style.animationDelay=(Math.random()*10)+'s'; em.appendChild(s); }
+const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add('on'); io.unobserve(x.target);}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
